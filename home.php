@@ -56,19 +56,24 @@
 
 				    <?php
 				    	$sql = "SELECT * FROM votes WHERE voters_id = '".$voter['id']."'";
+						$sql22 = "SELECT * FROM positions";
 				    	$vquery = $conn->query($sql);
-				    	if($vquery->num_rows > 0){
-				    		?>
-				    		<div class="text-center">
-					    		<h3>You have already voted for this election.</h3>
-					    		<a href="#view" data-toggle="modal" class="btn btn-flat btn-primary btn-lg">View Ballot</a>
-					    	</div>
-				    		<?php
-				    	}
-				    	else{
+						$vquery22 = $conn->query($sql22);
+				    	if($vquery->num_rows == $vquery22->num_rows){
+								?>
+								<div class="text-center">
+									<h3>You have already voted for this election.</h3>
+									<a href="#view" data-toggle="modal" class="btn btn-flat btn-primary btn-lg">View Ballot</a>
+								</div>
+								<?php
+						}
+						
+						else
+						{
+				    		
 				    		?>
 			    			<!-- Voting Ballot -->
-						    <form method="POST" id="ballotForm" action="submit_ballot.php">
+						  
 				        		<?php
 				        			include 'includes/slugify.php';
 
@@ -97,7 +102,7 @@
 													}
 												}
 											}
-											$input = ($row['max_vote'] > 1) ? '<input type="checkbox" class="flat-red '.$slug.'" name="'.$slug."[]".'" value="'.$crow['id'].'" '.$checked.'>' : '<input type="radio" class="flat-red '.$slug.'" name="'.slugify($row['description']).'" value="'.$crow['id'].'" '.$checked.'>';
+											$input = ($row['max_vote'] > 1) ? '<input type="radio" required class="flat-red '.$slug.'" name="'.$slug."[]".'" value="'.$crow['id'].'" '.$checked.'>' : '<input type="radio" class="flat-red '.$slug.'" name="'.slugify($row['description']).'" value="'.$crow['id'].'" '.$checked.'>';
 											$image = (!empty($crow['photo'])) ? 'images/'.$crow['photo'] : 'images/abc.png';
 											$candidate .= '
 												<li>
@@ -109,13 +114,15 @@
 										$instruct = ($row['max_vote'] > 1) ? 'You may select up to '.$row['max_vote'].' candidates' : 'Select only one candidate';
 
 										echo '
+										  
 											<div class="row">
 												<div class="col-xs-12">
+												<form method="POST" id="ballotForm" action="submit_ballot.php">
 													<div class="box box-solid" id="'.$row['id'].'">
 														<div class="box-header with-border">
 															<h3 class="box-title"><b>'.$row['description'].'</b></h3>
 														</div>
-														<div class="box-body">
+														<div class="box-body" >
 															<p>'.$instruct.'
 																<span class="pull-right">
 																	<button type="button" class="btn btn-success btn-sm btn-flat reset" data-desc="'.slugify($row['description']).'"><i class="fa fa-refresh"></i> Reset</button>
@@ -130,25 +137,27 @@
 													</div>
 												</div>
 											</div>
-										';
+											<div class="text-center">
+										<button type="submit" class="btn btn-primary btn-flat" name="vote"><i class="fa fa-check-square-o"></i> Submit</button>
+											</form>
+											</div>'
+								;
 
 										$candidate = '';
+
+										
 
 									}	
 
 				        		?>
-				        		<div class="text-center">
-					        		<button type="button" class="btn btn-success btn-flat" id="preview"><i class="fa fa-file-text"></i> Preview</button> 
-					        		<button type="submit" class="btn btn-primary btn-flat" name="vote"><i class="fa fa-check-square-o"></i> Submit</button>
-					        	</div>
-				        	</form>
+				        		
+				        	
 				        	<!-- End Voting Ballot -->
 				    		<?php
 				    	}
 
 				    ?>
-
-	        	</div>
+    	</div>
 	        </div>
 	      </section>
 	     

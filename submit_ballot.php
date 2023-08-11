@@ -22,8 +22,18 @@
 							$_SESSION['error'][] = 'You can only choose '.$row['max_vote'].' candidates for '.$row['description'];
 						}
 						else{
+							$sqlx = "SELECT * FROM votes WHERE voters_id = '".$voter['id']."'";
+							$vqueryx = $conn->query($sqlx);
+							while($ss=$vqueryx->fetch_assoc()){
+								if($pos_id == $ss['position_id']){
+								$_SESSION['error'] []= 'Already Voted';
+								header('location: home.php');
+								return;
+								}
+							}
+							
 							foreach($_POST[$position] as $key => $values){
-								$sql_array[] = "INSERT INTO votes (voters_id, candidate_id, position_id) VALUES ('".$voter['id']."', '$values', '$pos_id')";
+								$sql_array[] = "INSERT INTO votes (voters_id, candidate_id, position_id,status) VALUES ('".$voter['id']."', '$values', '$pos_id','voted')";
 							}
 
 						}
@@ -31,7 +41,7 @@
 					}
 					else{
 						$candidate = $_POST[$position];
-						$sql_array[] = "INSERT INTO votes (voters_id, candidate_id, position_id) VALUES ('".$voter['id']."', '$candidate', '$pos_id')";
+						$sql_array[] = "INSERT INTO votes (voters_id, candidate_id, position_id,status) VALUES ('".$voter['id']."', '$candidate', '$pos_id','voted')";
 					}
 
 				}
