@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.9
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2018 at 07:34 AM
--- Server version: 10.1.31-MariaDB
--- PHP Version: 7.1.15
+-- Generation Time: Aug 17, 2023 at 07:35 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `votesystem`
+-- Database: `votingsystem`
 --
 
 -- --------------------------------------------------------
@@ -36,14 +35,14 @@ CREATE TABLE `admin` (
   `lastname` varchar(50) NOT NULL,
   `photo` varchar(150) NOT NULL,
   `created_on` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `admin`
 --
 
 INSERT INTO `admin` (`id`, `username`, `password`, `firstname`, `lastname`, `photo`, `created_on`) VALUES
-(1, 'nurhodelta', '$2y$10$fLK8s7ZDnM.1lE7XMP.J6OuPbQ.DPUVKBo7rENnQY7gYq0xAzsKJy', 'Neovic', 'Devierte', 'facebook-profile-image.jpeg', '2018-04-02');
+(1, 'icsc', 'password', 'Admin', '', 'facebook-profile-image.jpeg', '2018-04-02');
 
 -- --------------------------------------------------------
 
@@ -58,7 +57,20 @@ CREATE TABLE `candidates` (
   `lastname` varchar(30) NOT NULL,
   `photo` varchar(150) NOT NULL,
   `platform` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `candidates`
+--
+
+INSERT INTO `candidates` (`id`, `position_id`, `firstname`, `lastname`, `photo`, `platform`) VALUES
+(32, 19, 'shaib', 'rafiq', '', ''),
+(33, 19, 'jun', 'aid', '', ''),
+(34, 19, 'dan', 'ish', '', ''),
+(35, 20, 'hif', 'zan', '', ''),
+(36, 20, 'bas', 'it', '', ''),
+(37, 21, 'abc', 'def', '', ''),
+(38, 21, 'mus', 'aib', '', '');
 
 -- --------------------------------------------------------
 
@@ -71,7 +83,15 @@ CREATE TABLE `positions` (
   `description` varchar(50) NOT NULL,
   `max_vote` int(11) NOT NULL,
   `priority` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `positions`
+--
+
+INSERT INTO `positions` (`id`, `description`, `max_vote`, `priority`) VALUES
+(19, 'CR', 1500000000, 0),
+(21, 'DDC', 1500000000, 0);
 
 -- --------------------------------------------------------
 
@@ -83,10 +103,20 @@ CREATE TABLE `voters` (
   `id` int(11) NOT NULL,
   `voters_id` varchar(15) NOT NULL,
   `password` varchar(60) NOT NULL,
-  `firstname` varchar(30) NOT NULL,
-  `lastname` varchar(30) NOT NULL,
-  `photo` varchar(150) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `photo` varchar(150) NOT NULL,
+  `aadhaar` varchar(12) NOT NULL,
+  `firstname` varchar(50) NOT NULL,
+  `lastname` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `voters`
+--
+
+INSERT INTO `voters` (`id`, `voters_id`, `password`, `photo`, `aadhaar`, `firstname`, `lastname`) VALUES
+(6, '7006730307', 'password', 'abc.png', '123456789123', 'junaid', 'mugloo'),
+(9, '8825069770', 'password', 'abc.png', '654397512356', 'Shoaib', 'Rafiq'),
+(10, '7006895353', 'password', 'abc.png', '987867564534', 'abc', '123');
 
 -- --------------------------------------------------------
 
@@ -98,8 +128,9 @@ CREATE TABLE `votes` (
   `id` int(11) NOT NULL,
   `voters_id` int(11) NOT NULL,
   `candidate_id` int(11) NOT NULL,
-  `position_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `position_id` int(11) NOT NULL,
+  `status` varchar(25) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Indexes for dumped tables
@@ -109,7 +140,8 @@ CREATE TABLE `votes` (
 -- Indexes for table `admin`
 --
 ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indexes for table `candidates`
@@ -127,7 +159,9 @@ ALTER TABLE `positions`
 -- Indexes for table `voters`
 --
 ALTER TABLE `voters`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `aadhaar` (`aadhaar`),
+  ADD UNIQUE KEY `voters_id` (`voters_id`);
 
 --
 -- Indexes for table `votes`
@@ -149,25 +183,25 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `candidates`
 --
 ALTER TABLE `candidates`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `positions`
 --
 ALTER TABLE `positions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `voters`
 --
 ALTER TABLE `voters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `votes`
 --
 ALTER TABLE `votes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=128;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

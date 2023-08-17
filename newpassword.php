@@ -7,8 +7,8 @@
     {
     include 'includes/conn.php';
 $q=$conn->query("UPDATE `voters` SET `password`='$_POST[voter]' WHERE `voters_id`='$_POST[vid]'");
-echo"<div class='callout callout-success text-center mt20'><p>password changed sccessfully</p></div>"; 
-echo'<a class="btn btn-success"  href="login.php">Click here to login</a>';  
+$_SESSION['error']="password changed sccessfully";
+header("location:index.php");
 }
 
 

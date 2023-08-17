@@ -3,8 +3,11 @@
 
 	if(isset($_POST['add'])){
 		$description = $_POST['description'];
-		$max_vote = $_POST['max_vote'];
-
+		if($_POST['max_vote']=="")
+		$max_vote="1500000000";
+		else
+			$max_vote = $_POST['max_vote'];
+			
 		$sql = "SELECT * FROM positions ORDER BY priority DESC LIMIT 1";
 		$query = $conn->query($sql);
 		$row = $query->fetch_assoc();

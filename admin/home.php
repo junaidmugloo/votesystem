@@ -155,7 +155,9 @@
                   </div>
                 </div>
               </div>
+              <!--<button class='btn btn-success'>Check</button>-->
             </div>
+           
           ";
           if($inc == 2) echo "</div>";  
         }

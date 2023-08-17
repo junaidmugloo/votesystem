@@ -26,7 +26,7 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <li class="user user-menu">
-            <a href="">
+            <a href="userprofile.php">
               <img src="<?php echo (!empty($voter['photo'])) ? 'images/'.$voter['photo'] : 'images/profile.jpg' ?>" class="user-image" alt="User Image">
               <span class="hidden-xs"><?php echo $voter['firstname'].' '.$voter['lastname']; ?></span>
             </a>

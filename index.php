@@ -20,7 +20,7 @@
 
     	<form action="login.php" method="POST">
       		<div class="form-group has-feedback">
-        		<input type="text" class="form-control" name="voter" placeholder="Voter's ID" required>
+        		<input type="text" class="form-control" name="voter" placeholder="Mobile Number" required>
         		<span class="glyphicon glyphicon-user form-control-feedback"></span>
       		</div>
           <div class="form-group has-feedback">
